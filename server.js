@@ -20,16 +20,23 @@ server.get("/api/accounts", async (req,res) => {
 
 server.get("/api/accounts/:id", async (req,res) => {
   try {
-     const accounts = db.select("*").from("accounts");
-     res.status(200).json(accounts)
+     const account = await db.select("*").from("accounts").where("id", req.params.id).first();
+     console.log(account);
+     res.status(200).json(account)
   }catch(err) {
      res.status(500).json({msg:`something went wrong with server`});
   }
 });
 
-server.post("/api/accounts", (req,res) => {
+server.post("/api/accounts", async (req,res) => {
   try {
-
+    const body = {
+      name: req.body.name,
+      budget:req.body.budget
+    }
+    const [account]  = await db("accounts").insert(body);
+    res.status(201).json(await db("accounts").where({id: account}).first());
+    console.log(`line 38`, account);
   }catch(err) {
      res.status(500).json({msg:`something went wrong with server`});
   }
