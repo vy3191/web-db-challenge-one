@@ -36,21 +36,29 @@ server.post("/api/accounts", async (req,res) => {
     }
     const [account]  = await db("accounts").insert(body);
     res.status(201).json(await db("accounts").where({id: account}).first());
-    console.log(`line 38`, account);
+   
   }catch(err) {
      res.status(500).json({msg:`something went wrong with server`});
   }
 });
 
-server.put("/api/accunts/:id", (req,res) => {
+server.put("/api/accounts/:id", async (req,res) => {
   try {
-
+    // translates to UPDATE posts SET title = ? AND contents=
+    const payload = {
+      name:req.body.name,
+      budget:req.body.budget
+    }
+    console.log(payload, req.params.id);
+    await db("accounts").where({id:req.params.id}).update(payload);
+    
+      res.status(200).json(await db("accounts").where({id: req.params.id}).first());
   }catch(err) {
-     res.status(500).json({msg:`something went wrong with server`});
+      res.status(500).json({msg:`something went wrong with server`});
   }
 });
 
-server.delete("/api/accunts/:id", (req,res) => {
+server.delete("/api/accounts/:id", (req,res) => {
   try {
 
   }catch(err) {
