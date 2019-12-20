@@ -58,9 +58,10 @@ server.put("/api/accounts/:id", async (req,res) => {
   }
 });
 
-server.delete("/api/accounts/:id", (req,res) => {
+server.delete("/api/accounts/:id", async (req,res) => {
   try {
-
+     await db("accounts").where("id", req.params.id).del();
+     res.status(204).end();    
   }catch(err) {
      res.status(500).json({msg:`something went wrong with server`});
   }
