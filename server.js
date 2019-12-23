@@ -28,6 +28,14 @@ server.get("/api/accounts/:id", async (req,res) => {
   }
 });
 
+server.get("/api/ciities", async (req,res) => {
+    try {
+        const cityCount = db('accounts').countDistinct('active')
+    }catch(err) {
+        
+    }
+});
+
 server.post("/api/accounts", async (req,res) => {
   try {
     const body = {
