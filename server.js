@@ -15,6 +15,7 @@ server.get("/api/accounts", async (req,res) => {
     res.status(200).json(accounts)
  }catch(err) {
     res.status(500).json({msg:`something went wrong with server`});
+    
  }
 });
 
@@ -42,7 +43,9 @@ server.post("/api/accounts", async (req,res) => {
       name: req.body.name,
       budget:req.body.budget
     }
+    // console.log('line45', body)
     const [account]  = await db("accounts").insert(body);
+    // console.log('line47',account)
     res.status(201).json(await db("accounts").where({id: account}).first());
    
   }catch(err) {
